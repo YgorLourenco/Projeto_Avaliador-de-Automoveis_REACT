@@ -1,24 +1,63 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react'
+import Header from './components/Header'
+import styled from '@emotion/styled'
+import Formulario from './components/Formulario'
+import Resumo from './components/Resumo'
+import Resultado from './components/Resultado'
+import Spinner from './components/Spinner'
+
+const Concatenador = styled.div`
+  max-width: 600px;
+  margin:0 auto;
+`;
+const ConcatenadorFormulario = styled.div`
+  background-color:#FFF;
+  padding: 3rem;
+`
 
 function App() {
+
+  const [resumo, guardarResumo] = useState({
+    avaliacao: 0,
+    dados: {
+      marca: '',
+      year: '',
+      plan: ''
+    }
+  }) // useState({}) e um objeto vazio
+
+  // Manipulando o Spinner de carregamento
+  const [carregando, guardarCarregando] = useState(false)
+
+  // Extrair Dados
+  const {avaliacao, dados} = resumo
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Concatenador>
+      <Header 
+      titulo='Avaliador de Seguros'
+      />
+    <ConcatenadorFormulario>
+      <Formulario 
+        guardarResumo={guardarResumo}
+        guardarCarregando={guardarCarregando}
+      />
+
+      {carregando ? <Spinner /> : null}
+
+      <Resumo 
+        dados = {dados}
+      />
+
+      {!carregando
+      ? <Resultado 
+        avaliacao={avaliacao}
+        />
+      : null}
+
+      
+    </ConcatenadorFormulario>
+    </Concatenador>
   );
 }
 
